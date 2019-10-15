@@ -1,18 +1,25 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 
-class Dashboard extends Component {
-  onLogoutClick = e => {
-    e.preventDefault();
-    this.props.logoutUser();
-  };
+function Dashboard({ logoutUser, auth }) {
+  const { user } = auth;
+  const [myGames, setMyGames] = useState([]);
 
-  render() {
-    const { user } = this.props.auth;
-
-    return (
+  useEffect(() => {
+    setTimeout(() => {
+      fetch(`/api/v1/games/my-games/${user.id}`)
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+          setMyGames(res.games);
+        });
+    }, 1000);
+  });
+  return (
+    <>
       <div style={{ height: "75vh" }} className="container valign-wrapper">
         <div className="row">
           <div className="landing-copy col s12 center-align">
@@ -30,7 +37,10 @@ class Dashboard extends Component {
                 letterSpacing: "1.5px",
                 marginTop: "1rem"
               }}
-              onClick={this.onLogoutClick}
+              onClick={e => {
+                e.preventDefault();
+                logoutUser();
+              }}
               className="btn btn-large waves-effect waves-light hoverable blue accent-3"
             >
               Logout
@@ -38,8 +48,50 @@ class Dashboard extends Component {
           </div>
         </div>
       </div>
-    );
-  }
+      <div>
+        <button
+          style={{
+            width: "150px",
+            borderRadius: "3px",
+            letterSpacing: "1.5px",
+            marginTop: "1rem"
+          }}
+          onClick={e => {
+            e.preventDefault();
+            console.log("user", user, {
+              x: user.id
+            });
+            fetch("/api/v1/games", {
+              method: "POST",
+              body: JSON.stringify({
+                x: user.id
+              }),
+              headers: {
+                "Content-Type": "application/json"
+              }
+            })
+              .then(res => res.json())
+              .then(res => console.log(res));
+          }}
+          className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+        >
+          Start Game
+        </button>
+        <div>
+          <h1>GAMES</h1>
+          <div>
+            {myGames.map(game => (
+              <div>
+                <Link to={`/games/${game._id}`}>
+                  {game._id} => {game.game}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
 Dashboard.propTypes = {
