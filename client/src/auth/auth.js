@@ -7,16 +7,16 @@ import setAuthToken from "../utils/setAuthToken";
 // Create user context to get user in nested pages
 export const AuthContext = React.createContext("auth");
 
-export const logoutUser = cb => {
+export const logoutUser = setUser => {
   // Remove token from local storage
   localStorage.removeItem("jwtToken");
   // Remove auth header for future requests
   setAuthToken(false);
   // Set current user to empty object {} which will set isAuthenticated to false
-  cb({});
+  setUser(null);
 };
 
-export const loginUser = cb => userData => {
+export const loginUser = (setUser, setErrors) => userData => {
   axios
     .post("/api/users/login", userData)
     .then(res => {
@@ -30,36 +30,27 @@ export const loginUser = cb => userData => {
       // Decode token to get user data
       const decoded = jwt_decode(token);
       // Set current user
-      cb(decoded);
+      setUser(decoded);
     })
-    .catch(
-      err => {
-        console.log(err);
-      }
-      // dispatch({
-      //   type: GET_ERRORS,
-      //   payload: err.response.data
-      // })
-    );
+    .catch(err => {
+      console.log(err);
+      setErrors(err.response.data);
+    });
 };
 
-export const registerUser = cb => (userData, history) => {
+export const registerUser = setErrors => (userData, history) => {
   axios
     .post("/api/users/register", userData)
     .then(res => history.push("/login"))
-    .catch(
-      err => {
-        console.log(err);
-      }
-      // dispatch({
-      //   type: GET_ERRORS,
-      //   payload: err.response.data
-      // })
-    );
+    .catch(err => {
+      console.log(err);
+      setErrors(err.response.data);
+    });
 };
 
 export function useAuth() {
   const [user, setUser] = useState(null);
+  const [errors, setErrors] = useState({});
   useEffect(() => {
     if (localStorage.jwtToken) {
       // Set auth token header auth
@@ -83,14 +74,21 @@ export function useAuth() {
 
   return {
     user,
-    loginUser: loginUser(setUser),
+    errors,
+    loginUser: loginUser(setUser, setErrors),
     logoutUser: () => logoutUser(setUser),
-    registerUser: registerUser(setUser)
+    registerUser: registerUser(setErrors)
   };
 }
 
 export function Auth({ children }) {
-  const { user, loginUser, logoutUser, registerUser } = useAuth;
+  const { user, errors, loginUser, logoutUser, registerUser } = useAuth();
 
-  return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{ user, errors, loginUser, logoutUser, registerUser }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
