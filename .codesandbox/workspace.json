@@ -4,14 +4,6 @@
       "views": [
         {
           "id": "codesandbox.browser"
-        },
-        {
-          "id": "codesandbox.browser",
-          "closeable": true,
-          "options": {
-            "port": 3000,
-            "url": "https://xv5y7-3000.sse.codesandbox.io"
-          }
         }
       ]
     },

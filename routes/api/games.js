@@ -40,21 +40,40 @@ router.get("/:gameId", (req, res) => {
 
 router.put("/:gameId", (req, res) => {
   console.log("gameId => ", req.params.gameId);
-  console.log("game => ", req.body);
-  Games.findById(req.params.gameId).then(game => {
-    if (game.currentTurn !== req.body.currentTurn) {
-      return res.status(401);
+  console.log("game => ", req.headers.authorization.split(" ")[1]);
+  // verify a token symmetric
+  jwt.verify(
+    req.headers.authorization.split(" ")[1],
+    keys.secretOrKey,
+    function(err, decoded) {
+      console.log("err =>", err); // bar
+      console.log("mega =>", decoded); // bar
+      const userId = decoded.id;
+      Games.findById(req.params.gameId).then(game => {
+        if (game.currentTurn !== req.body.currentTurn) {
+          return res.sendStatus(401);
+        }
+        if (game[game.currentTurn] !== userId) {
+          console.log("hi => ", game);
+          return res.sendStatus(401);
+        }
+        Games.updateOne(
+          { _id: req.params.gameId },
+          {
+            $set: {
+              game: req.body.game,
+              currentTurn: game.currentTurn === "x" ? "o" : "x"
+            }
+          },
+          function(err, data) {
+            // Updated at most one doc, `res.modifiedCount` contains the number
+            // of docs that MongoDB updated
+            console.log(data);
+            res.send(200);
+          }
+        );
+      });
     }
-    Game.updateOne({ _id: req.params.gameId }, {
-      $set: { 
-      game: req.body.game,
-      currentTurn: game.currentTurn === "x" ? "o" : "x"
-     }}, function(err, data) {
-      // Updated at most one doc, `res.modifiedCount` contains the number
-      // of docs that MongoDB updated
-      console.log(data)
-      res.send(200)
-    });
-  });
+  );
 });
 module.exports = router;

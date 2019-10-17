@@ -8,8 +8,7 @@
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "install": "cd ./client && yarn"
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "MIT",

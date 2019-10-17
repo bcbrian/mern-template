@@ -24,6 +24,7 @@ export default function() {
           <Route exact path="/login" component={Login} />
           <Switch>
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/games/:gameId" component={Game} />
           </Switch>
         </div>
       </Router>
