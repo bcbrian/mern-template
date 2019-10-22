@@ -1,25 +1,38 @@
 import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import { AuthContext } from "../../auth/auth";
+import Select from "../select/Select";
 
-export default function Dashboard() {
+export default function Dashboard({ history }) {
   const { user, logoutUser } = useContext(AuthContext);
 
-  const [myGames, setMyGames] = useState([]);
-
+  const [games, setGames] = useState({
+    my: [],
+    open: []
+  });
   useEffect(() => {
     setTimeout(() => {
       fetch(`/api/v1/games/my-games/${user.id}`)
         .then(res => res.json())
-        .then(res => {
-          console.log(res);
-          setMyGames(res.games);
+        .then(res1 => {
+          fetch(`/api/v1/games/open-games`)
+            .then(res => res.json())
+            .then(res2 => {
+              console.log(res1);
+              console.log(res2);
+              setGames({
+                my: res1.games,
+                open: res2.games
+              });
+            });
         });
     }, 1000);
-  });
+  }, []);
 
+  console.log("@#$%@#%#$%@#$%@#$%");
   return (
     <>
       <div style={{ height: "75vh" }} className="container valign-wrapper">
@@ -51,6 +64,19 @@ export default function Dashboard() {
         </div>
       </div>
       <div>
+        <div class="input-field col s6">
+          <Select
+            className="blue-text text-darken-2 blue"
+            options={[
+              {
+                value: "x"
+              },
+              {
+                value: "y"
+              }
+            ]}
+          />
+        </div>
         <button
           style={{
             width: "150px",
@@ -80,13 +106,40 @@ export default function Dashboard() {
           Start Game
         </button>
         <div>
-          <h1>GAMES</h1>
+          <h1>MY GAMES</h1>
           <div>
-            {myGames.map(game => (
+            {games.my.map(game => (
               <div>
                 <Link to={`/games/${game._id}`}>
                   {game._id} => {game.game}
                 </Link>
+              </div>
+            ))}
+          </div>
+          <h1>OPEN GAMES</h1>
+          <div>
+            {games.open.map(game => (
+              <div>
+                <span to={`/games/${game._id}`}>
+                  {game._id} => {game.game}
+                </span>
+                <button
+                  onClick={() => {
+                    axios({
+                      url: `/api/v1/games/join/${game._id}`,
+                      method: "PUT",
+                      data: {
+                        ...game,
+                        o: user.id
+                      }
+                    }).then(res => {
+                      console.log(res);
+                      history.push(`/games/${game._id}`);
+                    });
+                  }}
+                >
+                  JOIN
+                </button>
               </div>
             ))}
           </div>

@@ -24,7 +24,7 @@ export default function Game({ match }) {
     setTimeout(() => {
       getGame(match.params.gameId, setGame);
     }, 1000);
-  }, [turn]);
+  });
 
   return (
     <div className="game-container">
