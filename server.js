@@ -43,7 +43,7 @@ app.use("/api/users", users);
 app.use("/api/v1/games", games);
 
 const router = express.Router();
-router.use((req, res) =>
+router.use("*", (req, res) =>
  res.sendFile(path.join(__dirname, "../client/build/index.html"))
 );
 
