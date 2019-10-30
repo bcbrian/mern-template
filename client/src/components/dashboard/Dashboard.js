@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { AuthContext } from "../../auth/auth";
-import Select from "../select/Select";
 
 export default function Dashboard({ history }) {
   const { user, logoutUser } = useContext(AuthContext);
@@ -65,17 +64,7 @@ export default function Dashboard({ history }) {
       </div>
       <div>
         <div class="input-field col s6">
-          <Select
-            className="blue-text text-darken-2 blue"
-            options={[
-              {
-                value: "x"
-              },
-              {
-                value: "y"
-              }
-            ]}
-          />
+          
         </div>
         <button
           style={{
