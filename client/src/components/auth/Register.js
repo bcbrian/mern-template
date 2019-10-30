@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
+import { Box, Button, FormField, TextInput } from "grommet";
 
 import { AuthContext } from "../../auth/auth";
 
@@ -20,109 +21,99 @@ export default function Register({ history }) {
   }, [user, history]);
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col s8 offset-s2">
-          <Link to="/" className="btn-flat waves-effect">
-            <i className="material-icons left">keyboard_backspace</i> Back to
-            home
-          </Link>
-          <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-            <h4>
-              <b>Register</b> below
-            </h4>
-            <p className="grey-text text-darken-1">
-              Already have an account? <Link to="/login">Log in</Link>
-            </p>
-          </div>
-          <form
-            noValidate
-            onSubmit={e => {
-              e.preventDefault();
-
-              const newUser = {
-                name,
-                email,
-                password,
-                password2
-              };
-
-              registerUser(newUser, history);
-            }}
-          >
-            <div className="input-field col s12">
-              <input
-                onChange={event => setName(event.target.value)}
-                value={name}
-                error={errors.name}
-                id="name"
-                type="text"
-                className={classnames("", {
-                  invalid: errors.name
-                })}
-              />
-              <label htmlFor="name">Name</label>
-              <span className="red-text">{errors.name}</span>
-            </div>
-            <div className="input-field col s12">
-              <input
-                onChange={event => setEmail(event.target.value)}
-                value={email}
-                error={errors.email}
-                id="email"
-                type="email"
-                className={classnames("", {
-                  invalid: errors.email
-                })}
-              />
-              <label htmlFor="email">Email</label>
-              <span className="red-text">{errors.email}</span>
-            </div>
-            <div className="input-field col s12">
-              <input
-                onChange={event => setPassword(event.target.value)}
-                value={password}
-                error={errors.password}
-                id="password"
-                type="password"
-                className={classnames("", {
-                  invalid: errors.password
-                })}
-              />
-              <label htmlFor="password">Password</label>
-              <span className="red-text">{errors.password}</span>
-            </div>
-            <div className="input-field col s12">
-              <input
-                onChange={event => setPassword2(event.target.value)}
-                value={password2}
-                error={errors.password2}
-                id="password2"
-                type="password"
-                className={classnames("", {
-                  invalid: errors.password2
-                })}
-              />
-              <label htmlFor="password2">Confirm Password</label>
-              <span className="red-text">{errors.password2}</span>
-            </div>
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-              <button
-                style={{
-                  width: "150px",
-                  borderRadius: "3px",
-                  letterSpacing: "1.5px",
-                  marginTop: "1rem"
-                }}
-                type="submit"
-                className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-              >
-                Sign up
-              </button>
-            </div>
-          </form>
-        </div>
+    <Box justify="center" align="center" style={{ marginTop: "4rem" }}>
+      <Link to="/">Back to home</Link>
+      <div style={{ paddingLeft: "11.250px" }}>
+        <h4>
+          <b>Register</b> below
+        </h4>
+        <p>
+          Already have an account? <Link to="/login">Log in</Link>
+        </p>
       </div>
-    </div>
+      <form
+        noValidate
+        onSubmit={e => {
+          e.preventDefault();
+
+          const newUser = {
+            name,
+            email,
+            password,
+            password2
+          };
+
+          registerUser(newUser, history);
+        }}
+      >
+        <div>
+          <FormField label="Name">
+            <TextInput
+              placeholder="type here"
+              onChange={event => setName(event.target.value)}
+              value={name}
+              error={errors.name}
+              id="name"
+              type="text"
+              className={classnames("", {
+                invalid: errors.name
+              })}
+            />
+          </FormField>
+          <span style={{ color: "red" }}>{errors.name}</span>
+        </div>
+        <div>
+          <FormField label="Email">
+            <TextInput
+              placeholder="type here"
+              onChange={event => setEmail(event.target.value)}
+              value={email}
+              error={errors.email}
+              id="email"
+              type="email"
+              className={classnames("", {
+                invalid: errors.email
+              })}
+            />
+          </FormField>
+          <span style={{ color: "red" }}>{errors.email}</span>
+        </div>
+        <div>
+          <FormField label="Password">
+            <TextInput
+              placeholder="type here"
+              onChange={event => setPassword(event.target.value)}
+              value={password}
+              error={errors.password}
+              id="password"
+              type="password"
+              className={classnames("", {
+                invalid: errors.password
+              })}
+            />
+          </FormField>
+          <span style={{ color: "red" }}>{errors.password}</span>
+        </div>
+        <div>
+          <FormField label="Confirm Password">
+            <TextInput
+              placeholder="type here"
+              onChange={event => setPassword2(event.target.value)}
+              value={password2}
+              error={errors.password2}
+              id="password2"
+              type="password"
+              className={classnames("", {
+                invalid: errors.password2
+              })}
+            />
+          </FormField>
+          <span style={{ color: "red" }}>{errors.password2}</span>
+        </div>
+        <div style={{ paddingLeft: "11.250px" }}>
+          <Button type="submit" label="Sign up" />
+        </div>
+      </form>
+    </Box>
   );
 }

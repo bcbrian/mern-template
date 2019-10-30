@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { Box, Button } from "grommet";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -31,69 +32,60 @@ export default function Dashboard({ history }) {
     }, 1000);
   }, []);
 
-  console.log("@#$%@#%#$%@#$%@#$%");
+  console.log("wwwtttfff");
   return (
     <>
-      <div style={{ height: "75vh" }} className="container valign-wrapper">
-        <div className="row">
-          <div className="landing-copy col s12 center-align">
+      <div
+        style={{
+          height: "50vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center"
+        }}
+      >
+        <Box direction="row" align="center" justify="center">
+          <div>
             <h4>
               <b>Hey there,</b> {user.name.split(" ")[0]}
-              <p className="flow-text grey-text text-darken-1">
+              <p>
                 You are logged into a full-stack{" "}
                 <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
               </p>
             </h4>
-            <button
-              style={{
-                width: "150px",
-                borderRadius: "3px",
-                letterSpacing: "1.5px",
-                marginTop: "1rem"
-              }}
+            <Button
               onClick={e => {
                 e.preventDefault();
                 logoutUser();
               }}
-              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-            >
-              Logout
-            </button>
+              label="Logout"
+            />
           </div>
-        </div>
+        </Box>
       </div>
-      <div>
-        <div class="input-field col s6">
-          
-        </div>
-        <button
-          style={{
-            width: "150px",
-            borderRadius: "3px",
-            letterSpacing: "1.5px",
-            marginTop: "1rem"
-          }}
-          onClick={e => {
-            e.preventDefault();
-            console.log("user", user, {
-              x: user.id
-            });
-            fetch("/api/v1/games", {
-              method: "POST",
-              body: JSON.stringify({
+      <Box align="center" justify="center">
+        <Box align="center" justify="center">
+          <Button
+            onClick={e => {
+              e.preventDefault();
+              console.log("user", user, {
                 x: user.id
-              }),
-              headers: {
-                "Content-Type": "application/json"
-              }
-            })
-              .then(res => res.json())
-              .then(res => console.log(res));
-          }}
-          className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-        >
-          Start Game
-        </button>
+              });
+              fetch("/api/v1/games", {
+                method: "POST",
+                body: JSON.stringify({
+                  x: user.id
+                }),
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              })
+                .then(res => res.json())
+                .then(res => console.log(res));
+            }}
+            label="Start Game"
+          />
+        </Box>
         <div>
           <h1>MY GAMES</h1>
           <div>
@@ -112,7 +104,7 @@ export default function Dashboard({ history }) {
                 <span to={`/games/${game._id}`}>
                   {game._id} => {game.game}
                 </span>
-                <button
+                <Button
                   onClick={() => {
                     axios({
                       url: `/api/v1/games/join/${game._id}`,
@@ -126,14 +118,13 @@ export default function Dashboard({ history }) {
                       history.push(`/games/${game._id}`);
                     });
                   }}
-                >
-                  JOIN
-                </button>
+                  label="JOIN"
+                />
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </Box>
     </>
   );
 }

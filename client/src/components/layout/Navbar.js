@@ -1,23 +1,28 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { Box } from 'grommet';
 
 export default function() {
   return (
-    <div className="navbar-fixed">
-      <nav className="z-depth-0">
-        <div className="nav-wrapper white">
+    <Box
+  direction="row"
+  background='brand'
+  pad="medium"
+>
+<nav>
+        <div>
           <Link
             to="/"
             style={{
-              fontFamily: "monospace"
+              fontFamily: "monospace",
+              color: "white"
             }}
-            className="col s5 brand-logo center black-text"
           >
-            <i className="material-icons">code</i>
             MERN
           </Link>
         </div>
       </nav>
-    </div>
+</Box>
+   
   );
 }
