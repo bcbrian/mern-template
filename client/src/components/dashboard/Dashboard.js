@@ -1,9 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 
 import { AuthContext } from "../../auth/auth";
 
-export default function Dashboard({ history }) {
+export default function Dashboard() {
   const { user, logoutUser } = useContext(AuthContext);
 
   return (
@@ -23,8 +22,3 @@ export default function Dashboard({ history }) {
     </div>
   );
 }
-
-Dashboard.propTypes = {
-  logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-};
