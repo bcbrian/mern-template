@@ -1,16 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Grommet } from "grommet";
-import { normalizeColor } from "grommet/utils";
-import { rgba } from "polished";
-
-import Navbar from "./components/layout/Navbar";
-import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
-import Game from "./components/game/Game";
+import Interactions from "./components/interactions/Interactions";
 
 import { Auth } from "./auth/auth";
 
@@ -79,14 +74,26 @@ export default function() {
       <Auth>
         <Router>
           <div className="App">
-            <Navbar />
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Switch>
-              <PrivateRoute exact path="/dashboard" component={Dashboard} />
-              <PrivateRoute exact path="/games/:gameId" component={Game} />
-            </Switch>
+            {/* <Navbar /> */}
+            <div>
+              <Route exact path="/" component={Register} />
+            </div>
+            <div>
+              <Route exact path="/" component={Login} />
+            </div>
+            <div>
+              <Route exact path="/" component={Interactions} />
+            </div>
+            <div>
+              <PrivateRoute exact path="/" component={Dashboard} />
+            </div>
+            <div>
+              <PrivateRoute exact path="/" component={Interactions} />
+            </div>
+            
+            
+            
+            
           </div>
         </Router>
       </Auth>

@@ -1,0 +1,82 @@
+.App {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 100vh;
+}
+
+.App > div {
+  flex: 0 0 350px;
+  height: 40%;
+  border: 2px solid #333;
+  margin: 20px;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.App > div form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 90%;
+}
+
+.App > div form > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.App > div form > div > label {
+  flex: 1 1;
+  text-align: right;
+  padding: 0 12px 0 0;
+}
+
+.App > div form > div > span {
+  width: 100%;
+  min-height: 30px;
+  color: red;
+}
+
+button,
+input {
+  border: 2px solid rebeccapurple;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: rebeccapurple;
+  font-size: 20px;
+  font-family: sans-serif;
+}
+
+button {
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
+  text-transform: uppercase;
+  transition: all 0.3s ease 0s;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: rebeccapurple;
+  color: #fff;
+}
+
+.dashboard, .interactions {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.interactions > button {
+  margin: 12px auto;
+}

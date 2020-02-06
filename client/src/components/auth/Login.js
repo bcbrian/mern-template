@@ -1,8 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import classnames from "classnames";
-import { Box, Button, FormField, TextInput } from "grommet";
 import { AuthContext } from "../../auth/auth";
 
 export default function Login({ history }) {
@@ -14,84 +10,60 @@ export default function Login({ history }) {
   useEffect(() => {
     // If logged in and user navigates to Login page, should redirect them to dashboard
     if (user) {
-      history.push("/dashboard");
+      // history.push("/dashboard");
     }
   }, [user, history]);
 
   return (
-    <Box justify="center" align="center" style={{ marginTop: "4rem" }}>
-      <Link to="/">Back to home</Link>
-      <div style={{ paddingLeft: "11.250px" }}>
-        <h4>
-          <b>Login</b> below
-        </h4>
-        <p>
-          Don't have an account? <Link to="/register">Register</Link>
-        </p>
+    <form
+      noValidate
+      onSubmit={e => {
+        e.preventDefault();
+
+        const userData = {
+          email,
+          password
+        };
+
+        loginUser(userData);
+      }}
+    >
+      <div>
+        <label htmlFor="email">Email</label>
+        <input
+          placeholder="type here"
+          onChange={e => setEmail(e.target.value)}
+          value={email}
+          error={errors.email}
+          id="email"
+          type="email"
+          className="email"
+        />
+
+        <span>
+          {errors.email}
+          {errors.emailnotfound}
+        </span>
       </div>
-      <form
-        noValidate
-        onSubmit={e => {
-          e.preventDefault();
+      <div>
+        <label htmlFor="password">Password</label>
+        <input
+          placeholder="type here"
+          onChange={e => setPassword(e.target.value)}
+          value={password}
+          error={errors.password}
+          id="password"
+          type="password"
+        />
 
-          const userData = {
-            email,
-            password
-          };
-
-          loginUser(userData);
-        }}
-      >
-        <div>
-          <FormField label="Email">
-            <TextInput
-              placeholder="type here"
-              onChange={e => setEmail(e.target.value)}
-              value={email}
-              error={errors.email}
-              id="email"
-              type="email"
-              className={classnames("", {
-                invalid: errors.email || errors.emailnotfound
-              })}
-            />
-          </FormField>
-
-          <span style={{ color: "red" }}>
-            {errors.email}
-            {errors.emailnotfound}
-          </span>
-        </div>
-        <div>
-          <FormField label="Password">
-            <TextInput
-              placeholder="type here"
-              onChange={e => setPassword(e.target.value)}
-              value={password}
-              error={errors.password}
-              id="password"
-              type="password"
-              className={classnames("", {
-                invalid: errors.password || errors.passwordincorrect
-              })}
-            />
-          </FormField>
-
-          <span style={{ color: "red" }}>
-            {errors.password}
-            {errors.passwordincorrect}
-          </span>
-        </div>
-        <div style={{ paddingLeft: "11.250px" }}>
-          <Button type="submit" label="login" />
-        </div>
-      </form>
-    </Box>
+        <span>
+          {errors.password}
+          {errors.passwordincorrect}
+        </span>
+      </div>
+      <div>
+        <button type="submit">login</button>
+      </div>
+    </form>
   );
 }
-
-Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
-};

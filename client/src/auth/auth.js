@@ -41,7 +41,10 @@ export const loginUser = (setUser, setErrors) => userData => {
 export const registerUser = setErrors => (userData, history) => {
   axios
     .post("/api/users/register", userData)
-    .then(res => history.push("/login"))
+    .then(res => {
+      // history.push("/login")
+      console.log("registered")
+    })
     .catch(err => {
       console.log(err);
       setErrors(err.response.data);
@@ -66,8 +69,6 @@ export function useAuth() {
         // Logout user
         logoutUser(setUser);
 
-        // Redirect to login
-        window.location.href = "./login";
       }
     }
   }, []);
