@@ -18,7 +18,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "concurrently": "^4.0.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.7.5",
